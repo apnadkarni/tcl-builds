@@ -49,15 +49,17 @@ jobs:
     steps:
     - name: Download BAWT framework
       run: |
-        curl -L -o Bawt-3.2.0.zip https://www.tcl3d.org/bawt/download/Bawt-3.2.0.zip
-        Expand-Archive -Path Bawt-3.2.0.zip -DestinationPath .
+        Invoke-WebRequest -Uri "https://www.tcl3d.org/bawt/download/Bawt-3.2.0.zip" -OutFile "Bawt-3.2.0.zip"
+        Expand-Archive -Path "Bawt-3.2.0.zip" -DestinationPath "." -Force
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       shell: pwsh
 
     - name: Download MSYS/MinGW
       run: |
-        cd Bawt-3.2.0/Bootstrap-Windows
-        curl -L -o gcc14.2.0_x86_64-w64-mingw32.7z https://www.tcl3d.org/bawt/download/gcc14.2.0_x86_64-w64-mingw32.7z
-        cd ../..
+        Set-Location "Bawt-3.2.0/Bootstrap-Windows"
+        Invoke-WebRequest -Uri "https://www.tcl3d.org/bawt/download/gcc14.2.0_x86_64-w64-mingw32.7z" -OutFile "gcc14.2.0_x86_64-w64-mingw32.7z"
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        Set-Location "../.."
       shell: pwsh
 
     - name: Build Tcl/Tk Distribution
