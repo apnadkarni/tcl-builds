@@ -49,7 +49,7 @@ jobs:
     steps:
     - name: Download BAWT framework
       run: |
-        Invoke-WebRequest -Uri "https://www.tcl3d.org/bawt/download/Bawt-3.2.0.zip" -OutFile "Bawt-3.2.0.zip"
+        Invoke-WebRequest -Uri "https://www.bawt.tcl3d.org/download/Framework/Bawt-3.2.0.zip" -OutFile "Bawt-3.2.0.zip"
         Expand-Archive -Path "Bawt-3.2.0.zip" -DestinationPath "." -Force
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       shell: pwsh
@@ -57,7 +57,7 @@ jobs:
     - name: Download MSYS/MinGW
       run: |
         Set-Location "Bawt-3.2.0/Bootstrap-Windows"
-        Invoke-WebRequest -Uri "https://www.tcl3d.org/bawt/download/gcc14.2.0_x86_64-w64-mingw32.7z" -OutFile "gcc14.2.0_x86_64-w64-mingw32.7z"
+        Invoke-WebRequest -Uri "https://www.bawt.tcl3d.org/download/Bootstrap-Windows/gcc14.2.0_x86_64-w64-mingw32.7z" -OutFile "gcc14.2.0_x86_64-w64-mingw32.7z"
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
         Set-Location "../.."
       shell: pwsh
