@@ -33,8 +33,8 @@ on:
         type: choice
         required: true
         options:
-          - 'Tcl_BI.bawt'
-        default: 'Tcl_BI.bawt'
+          - 'Tcl_BI'
+        default: 'Tcl_BI'
 
 jobs:
   build-windows:
