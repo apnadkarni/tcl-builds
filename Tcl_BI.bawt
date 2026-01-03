@@ -1,0 +1,16 @@
+# Builds the official Tcl Batteries Included distribution
+
+Include "Tools.bawt"
+Include "BasicLibs.bawt"
+Include "Tcl_Basic.bawt"
+
+Setup   tkdnd             tkdnd-2.9.5.7z                 tkdnd.bawt
+Setup   tkribbon          tkribbon-1.2.7z                tkribbon.bawt
+
+Setup   tcltls            tcltls-2.0b3.7z                tcltls.bawt            NoSunOS-solaris
+
+
+Setup   libffi            libffi-3.4.8.7z                libffi.bawt            NoUniversal
+Setup   cffi              cffi-2.0.3.7z                  cffi.bawt              NoUniversal
+Setup   Ffidl             Ffidl-0.9.1.7z                 Ffidl.bawt             NoUniversal NoSunOS-solaris
+

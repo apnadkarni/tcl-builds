@@ -28,14 +28,13 @@ on:
           - '["x86"]'
           - '["x86, x64"]'
         default: '["x86, x64"]'
-      setup-file:
+      config:
         description: 'BAWT Setup file to use'
         type: choice
         required: true
         options:
-          - 'Setup/Tcl_Basic.bawt'
-          - 'Setup/Tcl_Extended.bawt'
-        default: 'Setup/Tcl_Basic.bawt'
+          - 'Tcl_BI.bawt'
+        default: 'Tcl_BI.bawt'
 
 jobs:
   build-windows:
@@ -64,8 +63,7 @@ jobs:
 
     - name: Build Tcl/Tk Distribution
       run: |
-        cd Bawt-3.2.0
-        tclkit-win32-intel.exe Bawt.tcl --rootdir ../BawtBuild/${{ matrix.tcl-version }} --architecture ${{ matrix.architecture }} --compiler gcc --numjobs 4 --update ${{ github.event.inputs.setup-file }} --tclversion ${{ matrix.tcl-version }} --exclude Python --exclude tclpy all
+        Bawt-3.2.0\tclkit-win32-intel.exe Bawt-3.2.0\Bawt.tcl --rootdir BawtBuild/${{ matrix.tcl-version }}/${{ github.event.inputs.config }}.bawt --architecture ${{ matrix.architecture }} --compiler gcc --numjobs 4 --update ${{ github.event.inputs.config }} --tclversion ${{ matrix.tcl-version }} --exclude ffmpeg
       shell: cmd
 
     - name: Upload build logs
@@ -73,13 +71,13 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: build-logs-windows-${{ matrix.architecture }}
-        path: BawtBuild/${{ matrix.tcl-version }}/Windows/${{ matrix.architecture }}/Logs/
+        path: BawtBuild/${{ matrix.tcl-version }}/${{ github.event.inputs.config }}/Windows/${{ matrix.architecture }}/Logs/
 
     - name: Upload distribution
       uses: actions/upload-artifact@v4
       with:
         name: tcl-distribution-windows-${{ matrix.tcl-version }} ${{ matrix.architecture }}
-        path: BawtBuild/${{ matrix.tcl-version }}/Windows/${{ matrix.architecture }}/Release/Distribution/opt/Tcl
+        path: BawtBuild/${{ matrix.tcl-version }}/${{ github.event.inputs.config }}/Windows/${{ matrix.architecture }}/Release/Distribution/opt/Tcl
 
   build-linux:
     if: github.event.inputs.platform == 'linux' || github.event.inputs.platform == 'all'
