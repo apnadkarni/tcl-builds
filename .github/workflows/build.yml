@@ -1,4 +1,4 @@
-name: Build a Windows Tcl/Tk Distribution with BAWT
+name: Tcl/Tk Distribution
 
 on:
   workflow_dispatch:
@@ -65,7 +65,7 @@ jobs:
     - name: Build Tcl/Tk Distribution
       run: |
         cd Bawt-3.2.0
-        tclkit-win32-intel.exe Bawt.tcl --rootdir ../BawtBuild/${{ matrix.tcl-version }} --architecture ${{ matrix.architecture }} --compiler gcc --numjobs 4 --update ${{ github.event.inputs.setup-file }} --tclversion ${{ matrix.tcl-version }} all
+        tclkit-win32-intel.exe Bawt.tcl --rootdir ../BawtBuild/${{ matrix.tcl-version }} --architecture ${{ matrix.architecture }} --compiler gcc --numjobs 4 --update ${{ github.event.inputs.setup-file }} --tclversion ${{ matrix.tcl-version }} --exclude Python --exclude tclpy all
       shell: cmd
 
     - name: Upload build logs
