@@ -63,7 +63,7 @@ jobs:
 
     - name: Build Tcl/Tk Distribution
       run: |
-        Bawt-3.2.0\tclkit-win32-intel.exe Bawt-3.2.0\Bawt.tcl --rootdir BawtBuild/${{ matrix.tcl-version }}/${{ github.event.inputs.config }}.bawt --architecture ${{ matrix.architecture }} --compiler gcc --numjobs 4 --update ${{ github.event.inputs.config }} --tclversion ${{ matrix.tcl-version }} --exclude ffmpeg
+        Bawt-3.2.0\tclkit-win32-intel.exe Bawt-3.2.0\Bawt.tcl --rootdir BawtBuild/${{ matrix.tcl-version }}/${{ github.event.inputs.config }} --architecture ${{ matrix.architecture }} --compiler gcc --numjobs 4 --complete ${{ github.event.inputs.config }}.bawt --tclversion ${{ matrix.tcl-version }} --exclude ffmpeg
       shell: cmd
 
     - name: Upload build logs
