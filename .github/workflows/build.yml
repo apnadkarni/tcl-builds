@@ -53,6 +53,9 @@ jobs:
         $GH_BAWT_BUILDDIR="BawtBuild/${{ matrix.tcl-version }}/${{ github.event.inputs.config }}/Windows/${{ matrix.architecture }}"
         "GH_BAWT_BUILDDIR=$GH_BAWT_BUILDDIR" >> $env:GITHUB_ENV
 
+    - name: Checkout repository
+      uses: actions/checkout@v5
+
     - name: Download BAWT framework
       shell: pwsh
       run: |
@@ -109,6 +112,9 @@ jobs:
           libx11-dev libcups2-dev libcairo2-dev libglx-dev \
           libglu1-mesa-dev libasound2-dev
 
+    - name: Checkout repository
+      uses: actions/checkout@v5
+
     - name: Download BAWT framework
       run: |
         curl -L -o Bawt-3.2.0.zip https://www.bawt.tcl3d.org/download/Framework/Bawt-3.2.0.zip
@@ -157,6 +163,9 @@ jobs:
        GH_BAWT_BUILDDIR="$GH_BAWT_BUILDROOT/MacOS/${{ matrix.architecture }}"
        echo "GH_BAWT_BUILDROOT=$GH_BAWT_BUILDROOT" >> $GITHUB_ENV
        echo "GH_BAWT_BUILDDIR=$GH_BAWT_BUILDDIR" >> $GITHUB_ENV
+
+    - name: Checkout repository
+      uses: actions/checkout@v5
 
     - name: Download BAWT framework
       run: |
