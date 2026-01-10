@@ -79,13 +79,13 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: build-logs-windows-${{ matrix.architecture }}
+        name: build-logs-windows-${{ matrix.tcl-version }}-${{ matrix.architecture }}
         path: ${{ env.GH_BAWT_BUILDDIR }}/Logs/
 
     - name: Upload distribution
       uses: actions/upload-artifact@v4
       with:
-        name: tcl-distribution-windows-${{ matrix.tcl-version }} ${{ matrix.architecture }}
+        name: tcl-distribution-windows-${{ matrix.tcl-version }}-${{ matrix.architecture }}
         path: ${{ env.GH_BAWT_BUILDDIR }}/Release/Distribution/opt/Tcl
 
   build-linux:
@@ -131,7 +131,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: build-logs-linux-${{ matrix.architecture }}
+        name: build-logs-linux-${{ matrix.tcl-version }}-${{ matrix.architecture }}
         path: ${{ env.GH_BAWT_BUILDDIR }}/Logs/
 
     - name: Upload distribution
