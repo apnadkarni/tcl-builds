@@ -52,9 +52,6 @@ jobs:
         $GH_BAWT_BUILDDIR="BawtBuild/${{ matrix.tcl-version }}/${{ github.event.inputs.config }}/Windows/${{ matrix.architecture }}"
         "GH_BAWT_BUILDDIR=$GH_BAWT_BUILDDIR" >> $env:GITHUB_ENV
 
-    - name: Checkout repository
-      uses: actions/checkout@v5
-
     - name: Download BAWT framework
       shell: pwsh
       run: |
@@ -99,11 +96,10 @@ jobs:
     steps:
     - name: Setup BAWT environment
       run: |
-       GH_BAWT_BUILDDIR="BawtBuild/${{ matrix.tcl-version }}/${{ github.event.inputs.config }}/Linux/${{ matrix.architecture }}"
+       GH_BAWT_BUILDROOT="BawtBuild/${{ matrix.tcl-version }}/${{ github.event.inputs.config }}"
+       GH_BAWT_BUILDDIR="$GH_BAWT_BUILDROOT/Linux/${{ matrix.architecture }}"
+       echo "GH_BAWT_BUILDROOT=$GH_BAWT_BUILDROOT" >> $GITHUB_ENV
        echo "GH_BAWT_BUILDDIR=$GH_BAWT_BUILDDIR" >> $GITHUB_ENV
-
-    - name: Checkout BAWT repository
-      uses: actions/checkout@v4
 
     - name: Install dependencies
       run: |
@@ -125,32 +121,40 @@ jobs:
 
     - name: Build Tcl/Tk Distribution
       run: |
-        Bawt-3.2.0/tclkit-Linux64-intel Bawt-3.2.0/Bawt.tcl --rootdir BawtBuild/${{ matrix.tcl-version }}/${{ github.event.inputs.config }} --architecture ${{ matrix.architecture }} --compiler gcc --numjobs 4 --complete --tclversion ${{ matrix.tcl-version }} --exclude ffmpeg ${{ github.event.inputs.config }}.bawt all
+        Bawt-3.2.0/tclkit-Linux64-intel Bawt-3.2.0/Bawt.tcl --rootdir $GH_BAWT_BUILDROOT --architecture ${{ matrix.architecture }} --compiler gcc --numjobs 4 --complete --tclversion ${{ matrix.tcl-version }} --exclude ffmpeg ${{ github.event.inputs.config }}.bawt all
 
     - name: Upload build logs
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: build-logs-linux-${{ matrix.tcl-version }}-${{ matrix.architecture }}
+        name: build-logs-linux-${{ matrix.tcl-version }}-${{ github.event.inputs.config }}-${{ matrix.architecture }}
         path: ${{ env.GH_BAWT_BUILDDIR }}/Logs/
 
     - name: Upload distribution
       uses: actions/upload-artifact@v4
       with:
-        name: tcl-distribution-linux-${{ matrix.architecture }}
-        path: BawtBuild/Linux/x${{ matrix.architecture }}/Release/Distribution/
+        name: tcl-distribution-linux-${{ matrix.tcl-version }}-${{ github.event.inputs.config }}-${{ matrix.architecture }}
+        path: ${{ env.GH_BAWT_BUILDDIR }}/Release/Distribution/opt/Tcl
 
   build-macos:
     if: github.event.inputs.platform == 'macos' || github.event.inputs.platform == 'all'
     runs-on: macos-latest
+    strategy:
+      matrix:
+        architecture: ${{ fromJSON(github.event.inputs.architectures) }}
+        tcl-version: ${{ fromJSON(github.event.inputs.tcl-versions) }}
 
     steps:
-    - name: Checkout BAWT repository
-      uses: actions/checkout@v4
-
     - name: Install XCode Command Line Tools
       run: |
         xcode-select --install 2>/dev/null || true
+
+    - name: Setup BAWT environment
+      run: |
+       GH_BAWT_BUILDROOT="BawtBuild/${{ matrix.tcl-version }}/${{ github.event.inputs.config }}"
+       GH_BAWT_BUILDDIR="$GH_BAWT_BUILDROOT/MacOS/${{ matrix.architecture }}"
+       echo "GH_BAWT_BUILDROOT=$GH_BAWT_BUILDROOT" >> $GITHUB_ENV
+       echo "GH_BAWT_BUILDDIR=$GH_BAWT_BUILDDIR" >> $GITHUB_ENV
 
     - name: Download BAWT framework
       run: |
@@ -165,19 +169,14 @@ jobs:
 
     - name: Build Tcl/Tk Distribution
       run: |
-        cd Bawt-3.2.0
-        SETUP_FILE="${{ github.event.inputs.setup_file }}"
-        if [ -z "$SETUP_FILE" ]; then
-          SETUP_FILE="Setup/Tcl_Basic.bawt"
-        fi
-        ./Build-Darwin.sh universal "$SETUP_FILE" update
+        Bawt-3.2.0/tclkit-Darwin64 Bawt-3.2.0/Bawt.tcl --rootdir BawtBuild/${{ matrix.tcl-version }}/${{ matrix.architecture }}/github.event.inputs.config }} --architecture ${{ matrix.architecture }} --complete --tclversion ${{ matrix.tcl-version }} --exclude ffmpeg ${{ github.event.inputs.config }}.bawt all
 
     - name: Upload build logs
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: build-logs-macos
-        path: BawtBuild/Darwin/x64/Logs/
+        name: build-logs-macos-{{ matrix.tcl-version }}-${{ matrix.architecture }}
+        path: ${{ env.GH_BAWT_BUILDDIR }}/Logs/
 
     - name: Upload distribution
       uses: actions/upload-artifact@v4
