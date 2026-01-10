@@ -26,8 +26,8 @@ on:
         options:
           - '["x64"]'
           - '["x86"]'
-          - '["x86, x64"]'
-        default: '["x86, x64"]'
+          - '["x86", "x64"]'
+        default: '["x86", "x64"]'
       config:
         description: 'BAWT Setup file to use'
         type: choice
