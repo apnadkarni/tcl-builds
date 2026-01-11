@@ -46,7 +46,7 @@ A pop-up shows the build options to select platform, Tcl version etc.
 
 ## Credits
 
-All credit goes to Paul Obermeir for his [BAWT](https://www.tcl3d.org/bawt/)
+All credit goes to Paul Obermeier for his [BAWT](https://www.tcl3d.org/bawt/)
 framework which does 100% of the heavy lifting needed for building
 distributions.
 
