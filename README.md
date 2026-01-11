@@ -7,10 +7,8 @@ Please raise a ticket for issues and suggestions.
 
 **Currently only 64-bit Tcl 9 builds are available. 32-bit or Tcl 8.6 builds TBD.**
 
-The generated distributions can be downloaded from the `Artifacts` section
-at the bottom of a Workflow run page. Click `Actions`, then `Tcl/Tk
-Distribution` link on the left, then the link to the Workflow run. This
-will be streamlined at some later point.
+The generated distributions can be downloaded from the 
+[Releases](https://github.com/apnadkarni/tcl-builds/releases) page.
 
 There is no installer. Distributions are ZIP archives. Extract and run.
 
@@ -42,7 +40,9 @@ investigated to choose one or integrate in some form.
 
 To do your own builds, clone the repository. On the Actions page, click the
 `Tcl/Tk Distribution` link on the left and then click the `Run workflow` button.
-A pop-up shows the build options to select platform, Tcl version etc.
+A pop-up shows the build options to select platform, Tcl version etc. The
+built distributions will be downloadable from the Artifacts section of
+the workflow run status page.
 
 ## Credits
 
