@@ -163,7 +163,7 @@ jobs:
     - name: Setup BAWT environment
       run: |
        GH_BAWT_BUILDROOT="BawtBuild/${{ matrix.tcl-version }}/${{ github.event.inputs.config }}"
-       GH_BAWT_BUILDDIR="$GH_BAWT_BUILDROOT/MacOS/${{ matrix.architecture }}"
+       GH_BAWT_BUILDDIR="$GH_BAWT_BUILDROOT/Darwin/${{ matrix.architecture }}"
        echo "GH_BAWT_BUILDROOT=$GH_BAWT_BUILDROOT" >> $GITHUB_ENV
        echo "GH_BAWT_BUILDDIR=$GH_BAWT_BUILDDIR" >> $GITHUB_ENV
 
@@ -196,5 +196,5 @@ jobs:
     - name: Upload distribution
       uses: actions/upload-artifact@v4
       with:
-        name: tcl-distribution-linux-${{ matrix.tcl-version }}-${{ github.event.inputs.config }}-${{ matrix.architecture }}
+        name: tcl-distribution-macos-${{ matrix.tcl-version }}-${{ github.event.inputs.config }}-${{ matrix.architecture }}
         path: ${{ env.GH_BAWT_BUILDDIR }}/Release/Distribution/opt/Tcl
