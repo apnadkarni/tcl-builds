@@ -65,11 +65,21 @@ jobs:
         Expand-Archive -Path "Bawt-3.2.0.zip" -DestinationPath "." -Force
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-    - name: Download MSYS/MinGW
+    - name: Download 64-bit MSYS/MinGW
+      if: matrix.architecture == 'x64'
       shell: pwsh
       run: |
         Set-Location "Bawt-3.2.0/Bootstrap-Windows"
         Invoke-WebRequest -Uri "https://www.bawt.tcl3d.org/download/Bootstrap-Windows/gcc14.2.0_x86_64-w64-mingw32.7z" -OutFile "gcc14.2.0_x86_64-w64-mingw32.7z"
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        Set-Location "../.."
+
+    - name: Download 32-bit MSYS/MinGW
+      if: matrix.architecture == 'x86'
+      shell: pwsh
+      run: |
+        Set-Location "Bawt-3.2.0/Bootstrap-Windows"
+        Invoke-WebRequest -Uri "https://www.bawt.tcl3d.org/download/Bootstrap-Windows/gcc14.2.0_i686-w64-mingw32.7z" -OutFile "gcc14.2.0_i686-w64-mingw32.7z"
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
         Set-Location "../.."
 
